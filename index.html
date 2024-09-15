@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | Flappy Bird</title>
+    <style>
+      /* Стили для экрана загрузки */
+      #loading-screen {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      /* Стили для контейнера прогресс-бара */
+      #progress-container {
+        width: 300px;
+        height: 40px;
+        border: 2px solid white;
+        padding: 5px;
+        box-sizing: border-box;
+        background-color: black;
+      }
+
+      /* Прогресс-бар */
+      #progress-bar {
+        width: 0%;
+        height: 100%;
+        background-color: white;
+        animation: load 5s linear forwards;
+      }
+
+      /* Анимация заполнения прогресс-бара */
+      @keyframes load {
+        0% { width: 0%; }
+        100% { width: 100%; }
+      }
+    </style>
+  </head>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <!-- Экран загрузки -->
+    <div id="loading-screen">
+      <div id="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Canvas для Unity -->
+    <canvas id="unity-canvas" width=1280 height=720 tabindex="-1" style="width: 1280px; height: 720px; background: url('Build/yyyyy.jpg') center / cover"></canvas>
+    <script src="Build/yyyyy.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Стиль для мобильных устройств
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+
+        document.body.style.textAlign = "left";
+      }
+
+      // Создание экземпляра Unity
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/yyyyy.data",
+        frameworkUrl: "Build/yyyyy.framework.js",
+        codeUrl: "Build/yyyyy.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Zigurous",
+        productName: "Flappy Bird",
+        productVersion: "0.1",
+      });
+
+      // Таймер для скрытия экрана загрузки через 5 секунд
+      setTimeout(function() {
+        var loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.style.display = 'none';
+      }, 5000);
+    </script>
+  </body>
+</html>
