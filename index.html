@@ -14,10 +14,10 @@
         justify-content: center;
         align-items: center;
         z-index: 9999;
-        transition: opacity 0.5s ease-out; /* Анимация исчезновения */
+        /* Remove transition for instant disappearance */
       }
 
-      /* Размытый фон */
+      /* Удален размытый фон */
       #background {
         position: absolute;
         top: 0;
@@ -25,7 +25,7 @@
         width: 100%;
         height: 100%;
         background: url('/Data/BG.png') center / cover no-repeat;
-        filter: blur(5px); /* Добавление размытия фона */
+        /* Removed blur effect */
       }
 
       /* Полупрозрачная заливка поверх фона */
@@ -62,7 +62,7 @@
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <!-- Экран загрузки -->
     <div id="loading-screen">
-      <!-- Размытый фон -->
+      <!-- Фон без размытия -->
       <div id="background"></div>
 
       <!-- Полупрозрачная заливка -->
@@ -115,10 +115,8 @@
       // Функция для скрытия экрана загрузки
       function hideLoadingScreen() {
         var loadingScreen = document.getElementById('loading-screen');
-        loadingScreen.style.opacity = 0; // Прозрачность
-        setTimeout(function() {
-          loadingScreen.style.display = 'none'; // Убираем элемент
-        }, 500); // Подождем 0.5 секунды, чтобы завершилась анимация исчезновения
+        // Instantly hide the loading screen
+        loadingScreen.style.display = 'none';
       }
     </script>
   </body>
