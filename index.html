@@ -57,11 +57,6 @@
         background-color: white;
       }
 
-      /* Анимация заполнения прогресс-бара */
-      @keyframes load {
-        0% { width: 0%; }
-        100% { width: 100%; }
-      }
     </style>
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
@@ -98,7 +93,7 @@
         document.body.style.textAlign = "left";
       }
 
-      // Функция для создания экземпляра Unity
+      // Создание экземпляра Unity с поддержкой прогресса загрузки
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/yyyyy.data",
@@ -108,14 +103,14 @@
         companyName: "Zigurous",
         productName: "Flappy Bird",
         productVersion: "0.1",
+      }, function(progress) {
+        // Обновление прогресс-бара в зависимости от прогресса загрузки
+        var progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = (progress * 100) + '%';
       }).then(function() {
-        // Убираем экран загрузки, когда игра загружена
+        // Когда игра полностью загружена, скрыть экран загрузки
         hideLoadingScreen();
       });
-
-      // Анимация загрузки для прогресс-бара (можно заменить на реальный прогресс)
-      var progressBar = document.getElementById('progress-bar');
-      progressBar.style.animation = 'load 3s linear forwards';
 
       // Функция для скрытия экрана загрузки
       function hideLoadingScreen() {
@@ -125,9 +120,6 @@
           loadingScreen.style.display = 'none'; // Убираем элемент
         }, 500); // Подождем 0.5 секунды, чтобы завершилась анимация исчезновения
       }
-
-      // Если Unity не загрузится через 3 секунды, скрываем экран загрузки
-      setTimeout(hideLoadingScreen, 3000);
     </script>
   </body>
 </html>
