@@ -98,8 +98,13 @@
     
     <script src="Build/yyyyy.loader.js"></script>
     <script>
+        // Устанавливаем размер canvas в 1280x720
+        const canvas = document.getElementById('unity-canvas');
+        canvas.width = 1280;
+        canvas.height = 720;
+
         // Создание экземпляра Unity с поддержкой прогресса загрузки
-        createUnityInstance(document.querySelector("#unity-canvas"), {
+        createUnityInstance(canvas, {
             arguments: [],
             dataUrl: "Build/yyyyy.data",
             frameworkUrl: "Build/yyyyy.framework.js",
