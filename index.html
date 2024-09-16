@@ -14,6 +14,7 @@
         justify-content: center;
         align-items: center;
         z-index: 9999;
+        transition: opacity 0.5s ease-out; /* Анимация исчезновения */
       }
 
       /* Размытый фон */
@@ -24,7 +25,7 @@
         width: 100%;
         height: 100%;
         background: url('/Data/BG.png') center / cover no-repeat;
-        filter: blur(5px); /* Добавление размытия только фона */
+        filter: blur(5px); /* Добавление размытия фона */
       }
 
       /* Полупрозрачная заливка поверх фона */
@@ -54,7 +55,6 @@
         width: 0%;
         height: 100%;
         background-color: white;
-        animation: load 5s linear forwards;
       }
 
       /* Анимация заполнения прогресс-бара */
@@ -98,7 +98,7 @@
         document.body.style.textAlign = "left";
       }
 
-      // Создание экземпляра Unity
+      // Функция для создания экземпляра Unity
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/yyyyy.data",
@@ -108,13 +108,26 @@
         companyName: "Zigurous",
         productName: "Flappy Bird",
         productVersion: "0.1",
+      }).then(function() {
+        // Убираем экран загрузки, когда игра загружена
+        hideLoadingScreen();
       });
 
-      // Таймер для скрытия экрана загрузки через 5 секунд
-      setTimeout(function() {
+      // Анимация загрузки для прогресс-бара (можно заменить на реальный прогресс)
+      var progressBar = document.getElementById('progress-bar');
+      progressBar.style.animation = 'load 3s linear forwards';
+
+      // Функция для скрытия экрана загрузки
+      function hideLoadingScreen() {
         var loadingScreen = document.getElementById('loading-screen');
-        loadingScreen.style.display = 'none';
-      }, 5000);
+        loadingScreen.style.opacity = 0; // Прозрачность
+        setTimeout(function() {
+          loadingScreen.style.display = 'none'; // Убираем элемент
+        }, 500); // Подождем 0.5 секунды, чтобы завершилась анимация исчезновения
+      }
+
+      // Если Unity не загрузится через 3 секунды, скрываем экран загрузки
+      setTimeout(hideLoadingScreen, 3000);
     </script>
   </body>
 </html>
