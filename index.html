@@ -5,6 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | Flappy Bird</title>
     <style>
+      /* Основные стили для страницы */
+      body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Убираем скроллбар */
+        height: 100%; /* Чтобы canvas заполнял всю высоту */
+        width: 100%; /* Чтобы canvas заполнял всю ширину */
+      }
+
       /* Контейнер для фона и экрана загрузки */
       #loading-screen {
         position: fixed;
@@ -42,11 +51,10 @@
       #progress-container {
         position: relative;
         z-index: 10000; /* Поверх всех элементов */
-        width: 200px; /* Уменьшение ширины панели загрузки */
-        height: 30px; /* Уменьшение высоты панели загрузки */
+        width: 200px;
+        height: 30px;
         border: 2px solid white;
         padding: 5px;
-        box-sizing: border-box;
         background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон прогресс-бара */
       }
 
@@ -54,12 +62,21 @@
       #progress-bar {
         width: 0%;
         height: 100%;
-        background-color: white;
+        background-color: #27b8cb;
       }
 
+      /* Стили для Canvas */
+      #unity-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        background: url('Build/yyyy2.jpg') center / cover;
+      }
     </style>
   </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+  <body>
     <!-- Экран загрузки -->
     <div id="loading-screen">
       <!-- Размытый фон -->
@@ -75,11 +92,12 @@
     </div>
 
     <!-- Canvas для Unity -->
-    <canvas id="unity-canvas" width=1280 height=720 tabindex="-1" style="width: 1280px; height: 720px; background: url('Build/yyyyy.jpg') center / cover"></canvas>
-    <script src="Build/yyyyy.loader.js"></script>
+    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
+
+    <script src="Build/yyyy2.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Стиль для мобильных устройств
+        // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -96,9 +114,9 @@
       // Создание экземпляра Unity с поддержкой прогресса загрузки
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
-        dataUrl: "Build/yyyyy.data",
-        frameworkUrl: "Build/yyyyy.framework.js",
-        codeUrl: "Build/yyyyy.wasm",
+        dataUrl: "Build/yyyy2.data",
+        frameworkUrl: "Build/yyyy2.framework.js",
+        codeUrl: "Build/yyyy2.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Zigurous",
         productName: "Flappy Bird",
