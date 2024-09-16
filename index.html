@@ -40,6 +40,7 @@
             background: url('/Data/BG.png') center / cover no-repeat;
             filter: blur(5px); /* Добавление размытия фона */
         }
+
         /* Полупрозрачная заливка поверх фона */
         #overlay {
             position: absolute;
@@ -97,13 +98,8 @@
     
     <script src="Build/yyyyy.loader.js"></script>
     <script>
-        // Устанавливаем размер canvas в 1280x720
-        const canvas = document.getElementById('unity-canvas');
-        canvas.width = 1280;
-        canvas.height = 720;
-
         // Создание экземпляра Unity с поддержкой прогресса загрузки
-        createUnityInstance(canvas, {
+        createUnityInstance(document.querySelector("#unity-canvas"), {
             arguments: [],
             dataUrl: "Build/yyyyy.data",
             frameworkUrl: "Build/yyyyy.framework.js",
