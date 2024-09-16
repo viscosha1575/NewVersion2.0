@@ -75,12 +75,6 @@
             width: 1280px; /* Фиксированная ширина */
             height: 720px; /* Фиксированная высота */
             object-fit: cover; /* Сохранение соотношения сторон и обрезка */
-            transition: transform 0.5s; /* Плавное масштабирование */
-        }
-
-        /* Увеличение размера для ПК */
-        .increase-size {
-            transform: scale(1.2); /* Увеличение на 20% */
         }
     </style>
 </head>
@@ -104,23 +98,8 @@
     
     <script src="Build/yyyyy.loader.js"></script>
     <script>
-        // Устанавливаем размер canvas в 1280x720
-        const canvas = document.getElementById('unity-canvas');
-        canvas.width = 1280;
-        canvas.height = 720;
-
-        // Определение типа устройства
-        function isMobile() {
-            return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        }
-
-        // Применяем класс для увеличения размера, если не мобильное устройство
-        if (!isMobile()) {
-            canvas.classList.add('increase-size');
-        }
-
         // Создание экземпляра Unity с поддержкой прогресса загрузки
-        createUnityInstance(canvas, {
+        createUnityInstance(document.querySelector("#unity-canvas"), {
             arguments: [],
             dataUrl: "Build/yyyyy.data",
             frameworkUrl: "Build/yyyyy.framework.js",
