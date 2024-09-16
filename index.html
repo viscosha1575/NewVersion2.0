@@ -1,95 +1,96 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unity Web Player | Flappy Bird</title>
     <style>
-      /* Основные стили для страницы */
-      body, html {
-        margin: 0;
-        padding: 0;
-        overflow: hidden; /* Убираем скроллбар */
-        height: 100%; /* Для того чтобы canvas заполнял всю высоту */
-        width: 100%; /* Для того чтобы canvas заполнял всю ширину */
-      }
+        /* Основные стили для страницы */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Убираем скроллбар */
+            height: 100vh; /* Высота экрана */
+            width: 100vw; /* Ширина экрана */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000; /* Цвет фона, если требуется */
+        }
 
-      /* Контейнер для фона и экрана загрузки */
-      #loading-screen {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease-out; /* Анимация исчезновения */
-      }
+        /* Контейнер для фона и экрана загрузки */
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out; /* Анимация исчезновения */
+        }
 
-      /* Размытый фон */
-      #background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('/Data/BG.png') center / cover no-repeat;
-        filter: blur(5px); /* Добавление размытия фона */
-      }
+        /* Размытый фон */
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/Data/BG.png') center / cover no-repeat;
+            filter: blur(5px); /* Добавление размытия фона */
+        }
 
-      /* Полупрозрачная заливка поверх фона */
-      #overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(55, 57, 113, 0.5); /* Полупрозрачная заливка */
-      }
+        /* Полупрозрачная заливка поверх фона */
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(55, 57, 113, 0.5); /* Полупрозрачная заливка */
+        }
 
-      /* Стили для контейнера прогресс-бара */
-      #progress-container {
-        position: relative;
-        z-index: 10000; /* Поверх всех элементов */
-        width: 200px; /* Уменьшение ширины панели загрузки */
-        height: 30px; /* Уменьшение высоты панели загрузки */
-        border: 2px solid white;
-        padding: 5px;
-        box-sizing: border-box;
-        background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон прогресс-бара */
-      }
+        /* Стили для контейнера прогресс-бара */
+        #progress-container {
+            position: relative;
+            z-index: 10000; /* Поверх всех элементов */
+            width: 200px; /* Уменьшение ширины панели загрузки */
+            height: 30px; /* Уменьшение высоты панели загрузки */
+            border: 2px solid white;
+            padding: 5px;
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон прогресс-бара */
+        }
 
-      /* Прогресс-бар */
-      #progress-bar {
-        width: 0%;
-        height: 100%;
-        background-color: #27b8cb;
-      }
+        /* Прогресс-бар */
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #27b8cb;
+        }
 
-      /* Стиль для Canvas */
-      #unity-canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Обеспечивает сохранение соотношения сторон и обрезку по краям */
-      }
+        /* Стиль для Canvas */
+        #unity-canvas {
+            width: 1280px; /* Фиксированная ширина */
+            height: 720px; /* Фиксированная высота */
+            object-fit: cover; /* Сохранение соотношения сторон и обрезка */
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <!-- Экран загрузки -->
     <div id="loading-screen">
-      <!-- Размытый фон -->
-      <div id="background"></div>
+        <!-- Размытый фон -->
+        <div id="background"></div>
 
-      <!-- Полупрозрачная заливка -->
-      <div id="overlay"></div>
+        <!-- Полупрозрачная заливка -->
+        <div id="overlay"></div>
 
-      <!-- Прогресс-бар -->
-      <div id="progress-container">
-        <div id="progress-bar"></div>
-      </div>
+        <!-- Прогресс-бар -->
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
     </div>
 
     <!-- Canvas для Unity -->
@@ -97,33 +98,33 @@
     
     <script src="Build/yyyyy.loader.js"></script>
     <script>
-      // Создание экземпляра Unity с поддержкой прогресса загрузки
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/yyyyy.data",
-        frameworkUrl: "Build/yyyyy.framework.js",
-        codeUrl: "Build/yyyyy.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Zigurous",
-        productName: "Flappy Bird",
-        productVersion: "0.1",
-      }, function(progress) {
-        // Обновление прогресс-бара в зависимости от прогресса загрузки
-        var progressBar = document.getElementById('progress-bar');
-        progressBar.style.width = (progress * 100) + '%';
-      }).then(function() {
-        // Когда игра полностью загружена, скрыть экран загрузки
-        hideLoadingScreen();
-      });
+        // Создание экземпляра Unity с поддержкой прогресса загрузки
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+            arguments: [],
+            dataUrl: "Build/yyyyy.data",
+            frameworkUrl: "Build/yyyyy.framework.js",
+            codeUrl: "Build/yyyyy.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "Zigurous",
+            productName: "Flappy Bird",
+            productVersion: "0.1",
+        }, function(progress) {
+            // Обновление прогресс-бара в зависимости от прогресса загрузки
+            var progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = (progress * 100) + '%';
+        }).then(function() {
+            // Когда игра полностью загружена, скрыть экран загрузки
+            hideLoadingScreen();
+        });
 
-      // Функция для скрытия экрана загрузки
-      function hideLoadingScreen() {
-        var loadingScreen = document.getElementById('loading-screen');
-        loadingScreen.style.opacity = 0; // Прозрачность
-        setTimeout(function() {
-          loadingScreen.style.display = 'none'; // Убираем элемент
-        }, 500); // Подождем 0.5 секунды, чтобы завершилась анимация исчезновения
-      }
+        // Функция для скрытия экрана загрузки
+        function hideLoadingScreen() {
+            var loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.style.opacity = 0; // Прозрачность
+            setTimeout(function() {
+                loadingScreen.style.display = 'none'; // Убираем элемент
+            }, 500); // Подождем 0.5 секунды, чтобы завершилась анимация исчезновения
+        }
     </script>
-  </body>
+</body>
 </html>
