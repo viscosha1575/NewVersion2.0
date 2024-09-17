@@ -4,26 +4,87 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | Flappy Bird</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1" style="width: 1080px; height: 1920px; background: url('Build/уууу4.jpg') center / cover"></canvas>
-    <script src="Build/уууу4.loader.js"></script>
-    <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
-
-        document.body.style.textAlign = "left";
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
       }
 
+      #unity-canvas {
+        width: 100vw; /* Полная ширина экрана */
+        height: 100vh; /* Полная высота экрана */
+        background: url('Build/уууу4.jpg') center / cover no-repeat;
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+      
+      /* Прогресс-бар и другие элементы остаются без изменений */
+      #loading-screen {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out; /* Анимация исчезновения */
+      }
+
+      #background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/Data/BG.png') center / cover no-repeat;
+        filter: blur(5px); /* Добавление размытия фона */
+      }
+
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(55, 57, 113, 0.5); /* Полупрозрачная заливка */
+      }
+
+      #progress-container {
+        position: relative;
+        z-index: 10000; /* Поверх всех элементов */
+        width: 200px;
+        height: 30px;
+        border: 2px solid white;
+        padding: 5px;
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      #progress-bar {
+        width: 0%;
+        height: 100%;
+        background-color: #27b8cb;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Экран загрузки -->
+    <div id="loading-screen">
+      <div id="background"></div>
+      <div id="overlay"></div>
+      <div id="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
+
+    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
+    <script src="Build/уууу4.loader.js"></script>
+    <script>
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/уууу4.data",
@@ -33,9 +94,21 @@
         companyName: "Zigurous",
         productName: "Flappy Bird",
         productVersion: "0.1",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      }, function(progress) {
+        var progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = (progress * 100) + '%';
+      }).then(function() {
+        hideLoadingScreen();
       });
+
+      function hideLoadingScreen() {
+        var loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.style.opacity = 0;
+        setTimeout(function() {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }
     </script>
   </body>
 </html>
+
