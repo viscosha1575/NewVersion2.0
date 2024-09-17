@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | Flappy Bird</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
       html, body {
         margin: 0;
@@ -104,6 +104,16 @@
         }
       }
 
+      function adjustViewportForTelegram() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Проверяем, открыт ли сайт в Telegram
+        if (userAgent.indexOf("Telegram") > -1) {
+          const metaViewport = document.querySelector("meta[name=viewport]");
+          metaViewport.setAttribute("content", "width=1080, height=1920, initial-scale=1, maximum-scale=1");
+        }
+      }
+
       // Настраиваем игру и отображение canvas
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
@@ -120,6 +130,7 @@
       }).then(function() {
         hideLoadingScreen();
         adjustCanvasSize(); // Применяем корректировку размера после загрузки
+        adjustViewportForTelegram(); // Корректируем размер в Telegram
       });
 
       function hideLoadingScreen() {
@@ -135,4 +146,5 @@
     </script>
   </body>
 </html>
+
 
