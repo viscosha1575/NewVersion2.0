@@ -21,6 +21,7 @@
         position: fixed;
         top: 0;
         left: 0;
+        transition: transform 0.5s ease; /* Добавляем плавную анимацию увеличения */
       }
       
       /* Прогресс-бар и другие элементы остаются без изменений */
@@ -85,6 +86,25 @@
     <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
     <script src="Build/уууу4.loader.js"></script>
     <script>
+      function isMobile() {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      }
+
+      function adjustCanvasSize() {
+        var canvas = document.getElementById('unity-canvas');
+        
+        if (!isMobile()) {
+          // Если это не мобильное устройство, увеличиваем размер на 15%
+          canvas.style.transform = 'scale(1.15)'; // Увеличиваем на 15%
+          canvas.style.transformOrigin = 'center'; // Масштабируем относительно центра
+        } else {
+          // Для мобильных устройств оставляем стандартный размер
+          canvas.style.width = '100vw';
+          canvas.style.height = '100vh';
+        }
+      }
+
+      // Настраиваем игру и отображение canvas
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/уууу4.data",
@@ -99,6 +119,7 @@
         progressBar.style.width = (progress * 100) + '%';
       }).then(function() {
         hideLoadingScreen();
+        adjustCanvasSize(); // Применяем корректировку размера после загрузки
       });
 
       function hideLoadingScreen() {
@@ -108,6 +129,9 @@
           loadingScreen.style.display = 'none';
         }, 500);
       }
+
+      // Корректировка размера при изменении окна
+      window.addEventListener('resize', adjustCanvasSize);
     </script>
   </body>
 </html>
